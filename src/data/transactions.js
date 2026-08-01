@@ -41,7 +41,7 @@ export const ALL_TRANSACTIONS = [
   { id: '9979-M-21', date: '06/07/2026', description: 'SB 941', amount: -8219, category: 'Salud', allocation: 'Casa', card: '9979', isInstallment: false, isUnbilled: false },
   { id: '9979-M-22', date: '07/07/2026', description: 'SB 933', amount: -12824, category: 'Salud', allocation: 'Casa', card: '9979', isInstallment: false, isUnbilled: false },
   { id: '9979-M-23', date: '08/07/2026', description: 'ARAMCO', amount: -21000, category: 'Combustible', allocation: 'Casa', card: '9979', isInstallment: false, isUnbilled: false },
-  { id: '9979-M-24', date: '10/07/2026', description: 'TUU AGUAS HONTANAR', amount: -13500, category: 'Servicios', allocation: 'Casa', card: '9979', isInstallment: false, isUnbilled: false },
+  { id: '9979-M-24', date: '10/07/2026', description: 'TUU AGUAS HONTANAR', amount: -13500, category: 'Servicios Básicos', allocation: 'Casa', card: '9979', isInstallment: false, isUnbilled: false },
   { id: '9979-M-25', date: '11/07/2026', description: 'SALCOBRAND LAS CONDES', amount: -33344, category: 'Salud', allocation: 'Casa', card: '9979', isInstallment: false, isUnbilled: false },
   { id: '9979-M-26', date: '11/07/2026', description: 'HIP LIDER PUENTE NUEVO', amount: -39640, category: 'Supermercado', allocation: 'Casa', card: '9979', isInstallment: false, isUnbilled: false },
   { id: '9979-M-27', date: '12/07/2026', description: 'MERCADOPAGO RYMCO', amount: -20000, category: 'Varios', allocation: 'Casa', card: '9979', isInstallment: false, isUnbilled: false },
@@ -73,7 +73,7 @@ export const ALL_TRANSACTIONS = [
   { id: '6259-M-1', date: '28/06/2026', description: 'DL RAPPI CHILE RAPPI', amount: -11700, category: 'Delivery', allocation: 'Casa', card: '6259', isInstallment: false, isUnbilled: false },
   { id: '6259-M-2', date: '28/06/2026', description: 'DL RAPPI CHILE RAPPI', amount: -17990, category: 'Delivery', allocation: 'Casa', card: '6259', isInstallment: false, isUnbilled: false },
   { id: '6259-M-3', date: '04/07/2026', description: 'DL RAPPI CHILE RAPPI', amount: -11460, category: 'Delivery', allocation: 'Casa', card: '6259', isInstallment: false, isUnbilled: false },
-  { id: '6259-M-4', date: '05/07/2026', description: 'AGUAS CORDILLERA', amount: -15290, category: 'Servicios', allocation: 'Casa', card: '6259', isInstallment: false, isUnbilled: false },
+  { id: '6259-M-4', date: '05/07/2026', description: 'AGUAS CORDILLERA', amount: -15290, category: 'Servicios Básicos', allocation: 'Casa', card: '6259', isInstallment: false, isUnbilled: false },
   { id: '6259-M-5', date: '07/07/2026', description: 'DL RAPPI CHILE RAPPI', amount: -8490, category: 'Delivery', allocation: 'Casa', card: '6259', isInstallment: false, isUnbilled: false },
   { id: '6259-M-6', date: '08/07/2026', description: 'JUMBO ONECLICK', amount: -3656, category: 'Supermercado', allocation: 'Casa', card: '6259', isInstallment: false, isUnbilled: false },
   { id: '6259-M-7', date: '08/07/2026', description: 'JUMBO ONECLICK', amount: -115892, category: 'Supermercado', allocation: 'Casa', card: '6259', isInstallment: false, isUnbilled: false },
@@ -92,8 +92,17 @@ export const ALL_TRANSACTIONS = [
   { id: '6259-PAY-1', date: '05/07/2026', description: 'MONTO CANCELADO', amount: 284912, category: 'Pago Tarjeta', type: 'payment', allocation: 'Casa', card: '6259', isInstallment: false, isUnbilled: false },
 ];
 
-// Bandeja completamente vacía para iniciar el próximo mes
-export const INITIAL_UNBILLED = [];
+/**
+ * Gastos ya realizados que todavía no llegan en ninguna cartola: aparecerán en
+ * la próxima facturación. No entran en el total de julio, sólo en la
+ * proyección del mes siguiente.
+ *
+ * Las fechas son aproximadas: corregirlas contra la cartola cuando llegue.
+ */
+export const INITIAL_UNBILLED = [
+  { id: 'unb-agua-1', date: '25/07/2026', description: 'CUENTA DE AGUA', amount: -13260, category: 'Servicios Básicos', allocation: 'Casa', card: '6259', isInstallment: false, isUnbilled: true },
+  { id: 'unb-luz-1', date: '25/07/2026', description: 'CUENTA DE LUZ', amount: -170540, category: 'Servicios Básicos', allocation: 'Casa', card: '6259', isInstallment: false, isUnbilled: true },
+];
 
 export const COLORS = {
   'Supermercado': '#10b981', 'Delivery': '#ef4444', 'Salud': '#ec4899', 'Transporte': '#f59e0b',
@@ -101,6 +110,8 @@ export const COLORS = {
   'Regalos/Varios': '#a855f7', 'Restaurantes': '#e11d48', 'Deporte': '#06b6d4', 'Impuestos': '#9ca3af',
   'Pago Tarjeta': '#22c55e', 'Abonos': '#84cc16', 'Varios': '#6366f1', 'Vivienda': '#059669',
   'Cuidado Infantil': '#14b8a6', 'Servicio Doméstico': '#eab308', 'Imposiciones': '#a16207',
+  // Agua, luz y gas separados de 'Servicios' para poder seguirlos mes a mes.
+  'Servicios Básicos': '#0891b2',
   'Adelantos': '#0ea5e9', 'Sin Clasificar': '#94a3b8',
 };
 
