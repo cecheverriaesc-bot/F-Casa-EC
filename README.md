@@ -3,6 +3,30 @@
 Panel para auditar el cierre financiero mensual del hogar: movimientos de tarjetas,
 cuotas arrastradas, gastos fijos y el reparto de cuánto le toca pagar a cada uno.
 
+## Desplegar en Vercel (acceso desde celular y PC)
+
+1. En [vercel.com/new](https://vercel.com/new), importa el repo `F-Casa-EC`.
+2. En **Settings → Git**, cambia la Production Branch a
+   `claude/financial-transactions-july-2026-wydc71` (o mergea a `main` primero).
+3. En **Settings → Environment Variables**, agrega las dos y marca los tres entornos
+   (Production, Preview, Development):
+
+   | Variable | Valor |
+   | --- | --- |
+   | `VITE_SUPABASE_URL` | `https://obizapqptkqovjuyeveb.supabase.co` |
+   | `VITE_SUPABASE_ANON_KEY` | la *publishable key* del panel de Supabase |
+
+   Vite reemplaza estas variables **al construir**, así que hay que redesplegar después
+   de agregarlas. Si faltan, la app muestra un aviso en vez de fallar en silencio.
+4. En Supabase → **Authentication → URL Configuration**, agrega la URL de Vercel a
+   *Site URL* y *Redirect URLs*. Sin esto el enlace del correo redirige a localhost.
+
+Desde ahí, cada `git push` redespliega solo.
+
+> **Proyectos gratis de Supabase se pausan tras 7 días sin uso.** Como esto se usa una
+> vez al mes, es probable encontrarlo pausado: se reactiva desde el panel de Supabase en
+> un par de clics. Un cron diario que toque la base lo evita.
+
 ## Puesta en marcha
 
 Requiere **Node.js 20.19+ o 22.12+** (lo exige Vite 7). Verifica con `node --version`;
