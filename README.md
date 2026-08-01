@@ -5,10 +5,19 @@ cuotas arrastradas, gastos fijos y el reparto de cuánto le toca pagar a cada un
 
 ## Puesta en marcha
 
+Requiere **Node.js 20.19+ o 22.12+** (lo exige Vite 7). Verifica con `node --version`;
+si te falta, descárgalo de [nodejs.org](https://nodejs.org).
+
 ```bash
+git clone https://github.com/cecheverriaesc-bot/F-Casa-EC.git
+cd F-Casa-EC
+git checkout claude/financial-transactions-july-2026-wydc71
 npm install
-npm run dev      # http://localhost:5173
+npm run dev
 ```
+
+La consola imprime `➜ Local: http://localhost:5173/`. Ábrelo en el navegador y ahí está
+el dashboard. Para detenerlo, `Ctrl+C` en la terminal.
 
 Otros comandos:
 
@@ -16,6 +25,20 @@ Otros comandos:
 npm run build    # build de producción en dist/
 npm run preview  # sirve el build ya generado
 ```
+
+### Si algo falla
+
+| Síntoma | Causa y solución |
+| --- | --- |
+| El repo se ve vacío | El código está en la rama `claude/financial-transactions-july-2026-wydc71`, no en `main`. Falta el `git checkout`. |
+| `Unsupported engine` o error raro en `npm install` | Node muy antiguo. Actualiza a 20.19+ o 22.12+. |
+| `EADDRINUSE: port 5173` | Ya hay algo en ese puerto. Usa `npm run dev -- --port 5174`. |
+| La página sale en blanco | Revisa la consola del navegador (F12) y que `npm install` haya terminado sin errores. |
+| Perdí mis ediciones | Se guardan en el `localStorage` de **ese** navegador y perfil. Otro navegador, otro equipo o una ventana incógnita parten de cero. |
+
+> **Nota de privacidad**: la cartola va dentro del código fuente (arriendo, sueldos,
+> compras). Corriendo local los datos no salen de tu equipo. Si algún día publicas esto
+> en una URL, sácalos primero o protege el acceso con contraseña.
 
 ## Qué muestra
 
