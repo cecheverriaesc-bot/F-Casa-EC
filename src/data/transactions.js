@@ -9,6 +9,7 @@ export const ALL_TRANSACTIONS = [
   { id: 'man-4', date: '05/07/2026', description: 'TIO TOTI', amount: -120000, category: 'Varios', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
   { id: 'man-5', date: '05/07/2026', description: 'STA MARIA', amount: -40000, category: 'Salud', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
   { id: 'man-6', date: '05/07/2026', description: 'SRA MIRIAM (ASESORA DEL HOGAR)', amount: -640000, category: 'Servicio Doméstico', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
+  { id: 'man-7', date: '05/07/2026', description: 'NICOLE (CUIDADO NIÑAS)', amount: -94500, category: 'Cuidado Infantil', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
 
   // --- DEUDAS EN CUOTAS FUERA DE TARJETA ---
   // Deuda con la suegra por la estufa: $73.331 mensuales durante 6 meses.
@@ -161,7 +162,7 @@ export const RECURRING_TEMPLATES = [
     category: 'Salud', allocation: 'Casa', paymentMethod: 'transferencia',
   },
   {
-    key: 'nicole', description: 'NICOLE (CUIDADO NIÑAS)', amount: null, day: 5,
+    key: 'nicole', description: 'NICOLE (CUIDADO NIÑAS)', amount: 94500, day: 5,
     category: 'Cuidado Infantil', allocation: 'Casa', paymentMethod: 'transferencia',
     note: 'Cuidado de las niñas en la mañana.',
   },
