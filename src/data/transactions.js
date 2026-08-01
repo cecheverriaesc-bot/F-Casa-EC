@@ -10,6 +10,10 @@ export const ALL_TRANSACTIONS = [
   { id: 'man-5', date: '05/07/2026', description: 'STA MARIA', amount: -40000, category: 'Salud', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
   { id: 'man-6', date: '05/07/2026', description: 'SRA MIRIAM (ASESORA DEL HOGAR)', amount: -640000, category: 'Servicio Doméstico', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
 
+  // --- DEUDAS EN CUOTAS FUERA DE TARJETA ---
+  // Deuda con la suegra por la estufa: $73.331 mensuales durante 6 meses.
+  { id: 'man-C-1', description: 'ESTUFA TOYOTOMI (SUEGRA)', installment: '01/06', amount: -73331, category: 'Tiendas', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: true, isUnbilled: false },
+
   // --- TARJETA 9979 (WorldMember) - COMPRAS Y CARGOS JULIO 2026 ---
   { id: '9979-M-1', date: '23/06/2026', description: 'UNIMARC VITACURA', amount: -3290, category: 'Supermercado', allocation: 'Casa', card: '9979', isInstallment: false, isUnbilled: false },
   { id: '9979-M-2', date: '26/06/2026', description: 'PASEO EL TAMARUGO', amount: -1500, category: 'Varios', allocation: 'Casa', card: '9979', isInstallment: false, isUnbilled: false },
