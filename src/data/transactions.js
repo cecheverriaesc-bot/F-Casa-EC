@@ -10,6 +10,8 @@ export const ALL_TRANSACTIONS = [
   { id: 'man-5', date: '05/07/2026', description: 'STA MARIA', amount: -40000, category: 'Salud', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
   { id: 'man-6', date: '05/07/2026', description: 'SRA MIRIAM (ASESORA DEL HOGAR)', amount: -640000, category: 'Servicio Doméstico', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
   { id: 'man-7', date: '05/07/2026', description: 'NICOLE (CUIDADO NIÑAS)', amount: -94500, category: 'Cuidado Infantil', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
+  // Monto aproximado: confirmar contra la planilla de Previred del mes.
+  { id: 'man-8', date: '10/07/2026', description: 'IMPOSICIONES (PREVIRED)', amount: -178632, category: 'Imposiciones', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
 
   // --- DEUDAS EN CUOTAS FUERA DE TARJETA ---
   // Deuda con la suegra por la estufa: $73.331 mensuales durante 6 meses.
@@ -172,9 +174,9 @@ export const RECURRING_TEMPLATES = [
     note: 'Sueldo líquido mensual.',
   },
   {
-    key: 'imposiciones', description: 'IMPOSICIONES (PREVIRED)', amount: null, day: 10,
+    key: 'imposiciones', description: 'IMPOSICIONES (PREVIRED)', amount: 178632, day: 10,
     category: 'Imposiciones', allocation: 'Casa', paymentMethod: 'transferencia',
-    note: 'AFP, salud y seguro de cesantía de la asesora del hogar.',
+    note: 'AFP, salud y cesantía de la asesora. Aproximado: confirmar con Previred.',
   },
 ];
 
