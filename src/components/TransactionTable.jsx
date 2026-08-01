@@ -31,11 +31,13 @@ const TransactionTable = () => {
     updateTransaction(id, { allocation: NEXT_ALLOCATION[current] || 'Casa' });
   };
 
-  // Alterna el pagador entre las partes; sólo aplica a gastos manuales.
+  // Alterna el pagador entre las partes; sólo aplica a gastos manuales. Se pasa
+  // el valor resuelto como `from` para que el historial registre lo que se veía
+  // en pantalla y no un campo vacío.
   const handleCyclePayer = (t) => {
     const current = resolvePaidBy(t, settings);
     const next = PEOPLE[(PEOPLE.indexOf(current) + 1) % PEOPLE.length];
-    updateTransaction(t.id, { paidBy: next });
+    updateTransaction(t.id, { paidBy: next }, { from: { paidBy: current } });
   };
 
   const activeData = getActiveData();

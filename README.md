@@ -134,10 +134,32 @@ src/
     └── format.js                  # moneda CLP y fechas
 ```
 
-Los datos viven en `src/lib/api.js`, un almacén en memoria que imita el contrato de un
-backend. Los cambios **no persisten** al recargar la página: para conectar una API real,
-basta con reemplazar el cuerpo de esos métodos por llamadas `fetch`; el contexto y los
-componentes no necesitan cambios.
+## Persistencia e historial
+
+Todo lo que edites (categorías, asignaciones, quién pagó, montos, configuración del
+reparto) **se guarda en el navegador** y sobrevive a un refresh. `src/lib/api.js` es el
+store: escribe en `localStorage` bajo la clave `f-casa-ec:v1` y lleva la bitácora.
+
+Cada mutación pasa por ahí, así que ninguna se puede quedar sin registrar. El panel
+**«Historial de cambios»** al pie muestra qué cambió, de qué valor a cuál y cuándo:
+
+```
+ARRIENDO      Pagó: Carlos → Rina              01/08 13:56
+TIO TOTI      Categoría: Varios → Servicio Doméstico
+Configuración Titular Limited: Carlos → Rina
+```
+
+- **Deshacer** (↺) revierte un cambio, restaura un ítem borrado o vuelve atrás un ajuste
+  de configuración. La bitácora es *append-only*: deshacer no borra el registro original,
+  agrega uno nuevo marcado `DESHACER`. El log refleja lo que pasó, no lo que quedó.
+- Se conservan los **últimos 500 registros**.
+- **«Volver a la cartola original»** descarta todos los cambios y el historial.
+- Si `localStorage` no está disponible (incógnito, cuota llena), la app sigue funcionando
+  en memoria y avisa con un cartel **«Sin guardar»** en vez de fallar en silencio.
+
+Los datos son locales a ese navegador: no se sincronizan entre dispositivos ni entre
+Carlos y Rina. Para eso hace falta un backend — y migrar es reemplazar el cuerpo de los
+métodos de `api.js` por llamadas `fetch`; el contexto y los componentes no cambian.
 
 ## Stack
 

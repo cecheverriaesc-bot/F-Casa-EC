@@ -11,6 +11,7 @@ import AddExpenseModal from './components/AddExpenseModal';
 import AddAdvanceModal from './components/AddAdvanceModal';
 import SettingsPanel from './components/SettingsPanel';
 import RecurringPanel from './components/RecurringPanel';
+import HistoryPanel from './components/HistoryPanel';
 
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,6 +57,7 @@ const Dashboard = () => {
             <ExpenseChart />
           </div>
         </div>
+        <HistoryPanel />
       </main>
       <AddExpenseModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       <AddAdvanceModal isOpen={isAdvanceOpen} onClose={() => setIsAdvanceOpen(false)} />
