@@ -10,6 +10,7 @@ import ExpenseChart from './components/ExpenseChart';
 import AddExpenseModal from './components/AddExpenseModal';
 import AddAdvanceModal from './components/AddAdvanceModal';
 import SettingsPanel from './components/SettingsPanel';
+import RecurringPanel from './components/RecurringPanel';
 
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,6 +47,7 @@ const Dashboard = () => {
       <main className="max-w-6xl mx-auto">
         <KPIStats />
         <AllocationBar />
+        <RecurringPanel />
         <SettingsPanel />
         <SettlementPanel onRegisterAdvance={() => setIsAdvanceOpen(true)} />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

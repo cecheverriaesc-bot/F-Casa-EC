@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Calendar, Clock, ShoppingCart, Trash2 } from 'lucide-react';
 import { useTransactions } from '../context/TransactionContext';
-import { ALLOCATION_COLORS, COLORS, PEOPLE } from '../data/transactions';
+import { ALLOCATION_COLORS, COLORS, PAYMENT_METHODS, PEOPLE } from '../data/transactions';
 import { formatCurrency } from '../lib/format';
-import { isAdvance, isPayerEditable, resolvePaidBy } from '../lib/settlement';
+import { isAdvance, isPayerEditable, resolvePaidBy, resolvePaymentMethod } from '../lib/settlement';
 import UnbilledImporter from './UnbilledImporter';
 
 const NEXT_ALLOCATION = { Casa: 'Carlos', Carlos: 'Rina', Rina: 'Casa' };
@@ -94,14 +94,18 @@ const TransactionTable = () => {
                     <span className="truncate max-w-[200px] md:max-w-[250px]" title={t.description}>
                       {t.description}
                     </span>
-                    {selectedCard === 'all' && (
-                      <span
-                        className={`text-[9px] font-bold tracking-wider mt-0.5 ${
-                          t.card === 'manual' ? 'text-emerald-500' : 'text-slate-400'
-                        }`}
-                      >
-                        {t.card === 'manual' ? 'EFECTIVO/TRANSF.' : `TER ${t.card}`}
+                    {/* En los manuales importa el medio de pago; en los de
+                        tarjeta, de cuál salió. */}
+                    {t.card === 'manual' ? (
+                      <span className="text-[9px] font-bold tracking-wider mt-0.5 text-emerald-600">
+                        {PAYMENT_METHODS[resolvePaymentMethod(t)]?.short}
                       </span>
+                    ) : (
+                      selectedCard === 'all' && (
+                        <span className="text-[9px] font-bold tracking-wider mt-0.5 text-slate-400">
+                          TER {t.card}
+                        </span>
+                      )
                     )}
                     {t.type === 'payment' && <span className="text-[10px] text-green-600 font-bold">Pago Cancelado</span>}
                     {t.type === 'refund' && (

@@ -1,4 +1,5 @@
-import { resolvePaidBy } from './settlement';
+import { PAYMENT_METHODS } from '../data/transactions';
+import { resolvePaidBy, resolvePaymentMethod } from './settlement';
 
 const HEADERS = [
   'Fecha',
@@ -7,6 +8,7 @@ const HEADERS = [
   'Categoria',
   'Asignacion',
   'Pago',
+  'Medio',
   'Tarjeta',
   'Estado',
   'Monto',
@@ -24,7 +26,8 @@ const toRow = (t, settings) => [
   t.category,
   t.type === 'payment' || t.type === 'advance' ? '-' : t.allocation,
   t.type === 'payment' ? '-' : t.type === 'advance' ? t.from : resolvePaidBy(t, settings),
-  t.card === 'manual' ? 'EFECTIVO/TRANSF.' : t.card,
+  PAYMENT_METHODS[resolvePaymentMethod(t)]?.label ?? '',
+  t.card === 'manual' ? 'MANUAL' : t.card,
   t.isUnbilled ? 'Por facturar' : 'Facturado',
   t.amount,
 ];

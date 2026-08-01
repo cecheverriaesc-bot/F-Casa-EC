@@ -74,10 +74,32 @@ en rojo si no lo hacen.
 Los pagos de tarjeta (`MONTO CANCELADO`) quedan fuera del total facturado: son el
 pago del ciclo anterior, no gasto del mes.
 
+## Gastos fijos: efectivo, débito y transferencia
+
+Buena parte del mes no llega en ninguna cartola. El panel **«Gastos fijos del mes»**
+es un checklist de lo recurrente (`RECURRING_TEMPLATES` en `src/data/transactions.js`):
+marca en verde lo ya cargado y en ámbar lo que falta, con el monto, el medio de pago y
+quién lo paga. Se abre solo cuando hay pendientes.
+
+| Gasto | Categoría | Monto |
+| --- | --- | --- |
+| Arriendo | Vivienda | $884.000 |
+| Gastos comunes | Vivienda | $274.393 |
+| Nicole (cuidado niñas) | Cuidado Infantil | *pendiente* |
+| Sra. Miriam (asesora del hogar) | Servicio Doméstico | *pendiente* |
+| Imposiciones (Previred) | Imposiciones | *pendiente* |
+
+Los tres pendientes no tienen monto en el código a propósito: se escriben en el panel,
+o se dejan fijos en `RECURRING_TEMPLATES` si son iguales todos los meses.
+
+Cada movimiento distingue además **cómo** salió la plata: `efectivo`, `debito`,
+`transferencia` o `credito` (este último se deduce solo de la tarjeta). El medio se ve
+como etiqueta bajo la descripción en la tabla y viaja en la columna `Medio` del CSV.
+
 ## Cómo cargar movimientos
 
-- **Gasto fijo / transferencia**: botón `Gasto Fijo` en el header. Queda con
-  `card: 'manual'` y aparece en la vista `Fijos`.
+- **Gasto fijo / transferencia**: botón `Gasto Fijo` en el header, o el panel de gastos
+  fijos para lo recurrente. Queda con `card: 'manual'` y aparece en la vista `Fijos`.
 - **Cartola por facturar**: pestaña `Por Facturar` → pega el texto de la cartola y
   presiona `Guardar Proyección`. El parser detecta fechas `DD/MM/YYYY` y montos, y
   descarta los movimientos que ya habías importado antes. Con `Confirmar a

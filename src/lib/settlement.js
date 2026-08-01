@@ -1,4 +1,4 @@
-import { PEOPLE } from '../data/transactions';
+import { DEFAULT_MANUAL_METHOD, PEOPLE } from '../data/transactions';
 
 // Un ítem es "neutro para el gasto" cuando mueve plata pero no representa
 // consumo del mes: el pago de la tarjeta (flujo de caja del ciclo anterior) y
@@ -18,6 +18,13 @@ export const resolvePaidBy = (t, { cardOwners, manualPayer }) => {
 // Sólo los gastos manuales se pueden reasignar de a uno; los de tarjeta se
 // cambian moviendo al titular de la tarjeta en Configuración.
 export const isPayerEditable = (t) => t.card === 'manual' && !isExpenseNeutral(t);
+
+// Cómo salió la plata. Todo lo cargado a una tarjeta es crédito; lo manual
+// puede ser efectivo, débito o transferencia.
+export const resolvePaymentMethod = (t) => {
+  if (t.card && t.card !== 'manual') return 'credito';
+  return t.paymentMethod ?? DEFAULT_MANUAL_METHOD;
+};
 
 const zeroed = () => Object.fromEntries(PEOPLE.map((p) => [p, 0]));
 
