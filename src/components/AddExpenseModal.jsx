@@ -2,25 +2,26 @@ import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { useTransactions } from '../context/TransactionContext';
-import { COLORS } from '../data/transactions';
+import { COLORS, PEOPLE } from '../data/transactions';
 import { isoToDisplayDate, todayAsIso } from '../lib/format';
 
-const emptyForm = () => ({
+const emptyForm = (paidBy) => ({
   description: '',
   amount: '',
   date: todayAsIso(),
   category: 'Vivienda',
   allocation: 'Casa',
+  paidBy,
 });
 
 const AddExpenseModal = ({ isOpen, onClose }) => {
-  const { addTransaction } = useTransactions();
-  const [form, setForm] = useState(emptyForm);
+  const { addTransaction, settings } = useTransactions();
+  const [form, setForm] = useState(() => emptyForm(settings.manualPayer));
 
   // Cada apertura parte con el formulario limpio y la fecha de hoy.
   useEffect(() => {
-    if (isOpen) setForm(emptyForm());
-  }, [isOpen]);
+    if (isOpen) setForm(emptyForm(settings.manualPayer));
+  }, [isOpen, settings.manualPayer]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -108,13 +109,32 @@ const AddExpenseModal = ({ isOpen, onClose }) => {
               value={form.category}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
             >
-              {Object.keys(COLORS).map((c) => (
-                <option key={c} value={c}>
-                  {c}
+              {Object.keys(COLORS)
+                .filter((c) => c !== 'Adelantos')
+                .map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+            </select>
+          </div>
+          <label htmlFor="expense-paid-by" className="flex flex-col gap-1">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">
+              ¿De qué cuenta salió la plata?
+            </span>
+            <select
+              id="expense-paid-by"
+              className="w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
+              value={form.paidBy}
+              onChange={(e) => setForm({ ...form, paidBy: e.target.value })}
+            >
+              {PEOPLE.map((p) => (
+                <option key={p} value={p}>
+                  Pagó {p}
                 </option>
               ))}
             </select>
-          </div>
+          </label>
         </div>
         <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-2">
           <button type="button" onClick={onClose} className="px-4 py-2 text-sm text-slate-700">

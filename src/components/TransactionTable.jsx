@@ -1,18 +1,20 @@
 import { useState } from 'react';
 import { Calendar, Clock, ShoppingCart, Trash2 } from 'lucide-react';
 import { useTransactions } from '../context/TransactionContext';
-import { ALLOCATION_COLORS, COLORS } from '../data/transactions';
+import { ALLOCATION_COLORS, COLORS, PEOPLE } from '../data/transactions';
 import { formatCurrency } from '../lib/format';
+import { isAdvance, isPayerEditable, resolvePaidBy } from '../lib/settlement';
 import UnbilledImporter from './UnbilledImporter';
 
 const NEXT_ALLOCATION = { Casa: 'Carlos', Carlos: 'Rina', Rina: 'Casa' };
 
 const TransactionTable = () => {
-  const { billedTransactions, unbilledTransactions, selectedCard, updateTransaction, deleteTransaction } =
+  const { billedTransactions, unbilledTransactions, selectedCard, settings, updateTransaction, deleteTransaction } =
     useTransactions();
   const [viewMode, setViewMode] = useState('daily');
 
-  const currentDaily = billedTransactions.filter((t) => !t.isInstallment);
+  // Los adelantos son movimientos de cuadratura, no gasto: viven en el panel de cierre.
+  const currentDaily = billedTransactions.filter((t) => !t.isInstallment && !isAdvance(t));
   const currentInstallments = billedTransactions.filter((t) => t.isInstallment);
 
   const getActiveData = () => {
@@ -23,6 +25,13 @@ const TransactionTable = () => {
 
   const handleCycleAllocation = (id, current) => {
     updateTransaction(id, { allocation: NEXT_ALLOCATION[current] || 'Casa' });
+  };
+
+  // Alterna el pagador entre las partes; sólo aplica a gastos manuales.
+  const handleCyclePayer = (t) => {
+    const current = resolvePaidBy(t, settings);
+    const next = PEOPLE[(PEOPLE.indexOf(current) + 1) % PEOPLE.length];
+    updateTransaction(t.id, { paidBy: next });
   };
 
   const activeData = getActiveData();
@@ -61,7 +70,7 @@ const TransactionTable = () => {
         {viewMode === 'unbilled' && <UnbilledImporter />}
         {/* El min-w evita que en móvil se recorten Cat/Asignación/Monto: se
             desplazan horizontalmente en vez de quedar inalcanzables. */}
-        <table className="w-full min-w-[560px] text-sm text-left">
+        <table className="w-full min-w-[660px] text-sm text-left">
           <thead className="text-xs text-slate-500 uppercase bg-slate-50 sticky top-0 shadow-sm z-10">
             <tr>
               {viewMode !== 'installments' && <th className="px-4 py-3 font-medium w-[90px]">Fecha</th>}
@@ -69,6 +78,7 @@ const TransactionTable = () => {
               {viewMode === 'installments' && <th className="px-4 py-3 font-medium text-center w-[80px]">Cuota</th>}
               <th className="px-4 py-3 font-medium text-center w-[100px]">Cat</th>
               <th className="px-4 py-3 font-medium text-center w-[90px]">Asignación</th>
+              <th className="px-4 py-3 font-medium text-center w-[85px]">Pagó</th>
               <th className="px-4 py-3 font-medium text-right w-[100px]">Monto</th>
               <th className="px-2 py-3" />
             </tr>
@@ -124,6 +134,30 @@ const TransactionTable = () => {
                     </button>
                   ) : (
                     <span className="text-slate-300 text-xs">-</span>
+                  )}
+                </td>
+                <td className="px-4 py-3 text-center">
+                  {t.type === 'payment' ? (
+                    <span className="text-slate-300 text-xs">-</span>
+                  ) : isPayerEditable(t) ? (
+                    <button
+                      type="button"
+                      onClick={() => handleCyclePayer(t)}
+                      title="Cambiar quién desembolsó este gasto"
+                      className={`px-2 py-1 text-[11px] font-bold rounded border transition-all shadow-sm ${
+                        ALLOCATION_COLORS[resolvePaidBy(t, settings)]
+                      }`}
+                    >
+                      {resolvePaidBy(t, settings)}
+                    </button>
+                  ) : (
+                    // Lo define el titular de la tarjeta, no el ítem.
+                    <span
+                      title={`Titular de la tarjeta ${t.card} — se cambia en Configuración`}
+                      className="px-2 py-1 text-[11px] font-medium rounded border border-slate-200 bg-slate-50 text-slate-500 whitespace-nowrap"
+                    >
+                      {resolvePaidBy(t, settings)}
+                    </span>
                   )}
                 </td>
                 <td className={`px-4 py-3 text-right font-bold ${t.amount > 0 ? 'text-green-600' : 'text-slate-700'}`}>

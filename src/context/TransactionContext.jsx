@@ -1,5 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { api } from '../lib/api';
+import { DEFAULT_CARD_OWNERS, DEFAULT_MANUAL_PAYER, DEFAULT_SPLIT_RATIO } from '../data/transactions';
+import { computeSettlement, isExpenseNeutral } from '../lib/settlement';
 
 const TransactionContext = createContext(null);
 
@@ -8,6 +10,19 @@ export const TransactionProvider = ({ children }) => {
   const [selectedCard, setSelectedCard] = useState('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [settings, setSettings] = useState({
+    splitRatio: DEFAULT_SPLIT_RATIO,
+    cardOwners: DEFAULT_CARD_OWNERS,
+    manualPayer: DEFAULT_MANUAL_PAYER,
+  });
+
+  const updateSettings = useCallback((patch) => {
+    setSettings((prev) => ({ ...prev, ...patch }));
+  }, []);
+
+  const setCardOwner = useCallback((card, owner) => {
+    setSettings((prev) => ({ ...prev, cardOwners: { ...prev.cardOwners, [card]: owner } }));
+  }, []);
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -37,7 +52,8 @@ export const TransactionProvider = ({ children }) => {
   const stats = useMemo(() => {
     const currentDaily = billedTransactions.filter((t) => !t.isInstallment);
     const currentInstallments = billedTransactions.filter((t) => t.isInstallment);
-    const billableItems = billedTransactions.filter((t) => t.type !== 'payment');
+    // Los adelantos y los pagos de tarjeta quedan fuera del gasto: no son consumo.
+    const billableItems = billedTransactions.filter((t) => !isExpenseNeutral(t));
 
     const newExpenses = currentDaily.filter((t) => !t.type).reduce((sum, t) => sum + t.amount, 0);
     const installmentsTotal = currentInstallments.reduce((sum, t) => sum + t.amount, 0);
@@ -56,6 +72,18 @@ export const TransactionProvider = ({ children }) => {
 
     return { newExpenses, installmentsTotal, totalBilled, allocationTotals, totalUnbilled };
   }, [billedTransactions, unbilledTransactions]);
+
+  // Cuadratura de la vista actual y, en paralelo, la del mes completo: el monto
+  // que se transfieren de verdad es el global, no el de una tarjeta suelta.
+  const settlement = useMemo(
+    () => computeSettlement({ billedTransactions, ...settings }),
+    [billedTransactions, settings],
+  );
+
+  const globalSettlement = useMemo(
+    () => computeSettlement({ billedTransactions: allTransactions.filter((t) => !t.isUnbilled), ...settings }),
+    [allTransactions, settings],
+  );
 
   const addTransaction = useCallback(async (transaction) => {
     setAllTransactions((prev) => [...prev, transaction]);
@@ -85,6 +113,11 @@ export const TransactionProvider = ({ children }) => {
       billedTransactions,
       unbilledTransactions,
       stats,
+      settlement,
+      globalSettlement,
+      settings,
+      updateSettings,
+      setCardOwner,
       loading,
       error,
       refresh,
@@ -99,6 +132,11 @@ export const TransactionProvider = ({ children }) => {
       billedTransactions,
       unbilledTransactions,
       stats,
+      settlement,
+      globalSettlement,
+      settings,
+      updateSettings,
+      setCardOwner,
       loading,
       error,
       refresh,

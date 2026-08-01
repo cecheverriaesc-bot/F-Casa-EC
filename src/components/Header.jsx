@@ -11,7 +11,7 @@ const CARD_TABS = [
 ];
 
 const Header = ({ onOpenModal }) => {
-  const { selectedCard, setSelectedCard, billedTransactions, unbilledTransactions } = useTransactions();
+  const { selectedCard, setSelectedCard, billedTransactions, unbilledTransactions, settings } = useTransactions();
 
   const getSubTitle = () => {
     if (selectedCard === 'all') return 'Tarjetas + Gastos Fijos (Auditoría Julio)';
@@ -22,7 +22,7 @@ const Header = ({ onOpenModal }) => {
   const handleExport = () => {
     const rows = [...billedTransactions, ...unbilledTransactions];
     if (rows.length === 0) return;
-    downloadCsv(rows, `cierre-julio-2026-${selectedCard}.csv`);
+    downloadCsv(rows, `cierre-julio-2026-${selectedCard}.csv`, settings);
   };
 
   return (

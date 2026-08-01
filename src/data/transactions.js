@@ -91,8 +91,23 @@ export const COLORS = {
   'Supermercado': '#10b981', 'Delivery': '#ef4444', 'Salud': '#ec4899', 'Transporte': '#f59e0b',
   'Combustible': '#f97316', 'Tiendas': '#8b5cf6', 'Servicios': '#64748b', 'Viajes': '#3b82f6',
   'Regalos/Varios': '#a855f7', 'Restaurantes': '#e11d48', 'Deporte': '#06b6d4', 'Impuestos': '#9ca3af',
-  'Pago Tarjeta': '#22c55e', 'Abonos': '#84cc16', 'Varios': '#6366f1', 'Vivienda': '#059669', 'Sin Clasificar': '#94a3b8',
+  'Pago Tarjeta': '#22c55e', 'Abonos': '#84cc16', 'Varios': '#6366f1', 'Vivienda': '#059669',
+  'Adelantos': '#0ea5e9', 'Sin Clasificar': '#94a3b8',
 };
+
+// Las dos partes del cierre. El orden importa: en un reparto desparejo el
+// primero toma la fracción redondeada y el segundo el resto.
+export const PEOPLE = ['Carlos', 'Rina'];
+
+// Titular que paga cada tarjeta: define quién desembolsa lo cargado ahí.
+// Editable en el panel de Configuración.
+export const DEFAULT_CARD_OWNERS = { '9979': 'Carlos', '6259': 'Carlos' };
+
+// Pagador de un gasto manual que no trae `paidBy` propio.
+export const DEFAULT_MANUAL_PAYER = 'Carlos';
+
+// Fracción de los gastos 'Casa' que asume PEOPLE[0]. 0.5 = mitad y mitad.
+export const DEFAULT_SPLIT_RATIO = 0.5;
 
 export const ALLOCATION_COLORS = {
   'Casa': 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200 border-indigo-200',

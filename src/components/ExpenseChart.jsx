@@ -4,6 +4,7 @@ import { Layers } from 'lucide-react';
 import { useTransactions } from '../context/TransactionContext';
 import { COLORS } from '../data/transactions';
 import { formatCurrency } from '../lib/format';
+import { isExpenseNeutral } from '../lib/settlement';
 
 const ExpenseChart = () => {
   const { billedTransactions, stats, selectedCard } = useTransactions();
@@ -11,7 +12,7 @@ const ExpenseChart = () => {
   const chartData = useMemo(() => {
     const categoryTotals = {};
     billedTransactions.forEach((t) => {
-      if (t.amount < 0 && t.type !== 'payment') {
+      if (t.amount < 0 && !isExpenseNeutral(t)) {
         categoryTotals[t.category] = (categoryTotals[t.category] || 0) + Math.abs(t.amount);
       }
     });
