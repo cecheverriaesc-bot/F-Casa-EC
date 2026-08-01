@@ -99,17 +99,11 @@ const EntryBody = ({ entry }) => {
 };
 
 const HistoryPanel = () => {
-  const { history, undoHistoryEntry, resetAll, persisted } = useTransactions();
+  const { history, undoHistoryEntry, persisted } = useTransactions();
   const [open, setOpen] = useState(false);
 
   const canUndo = (e) =>
     e.action === 'update' || e.action === 'settings' || (e.action === 'delete' && e.snapshot);
-
-  const handleReset = () => {
-    if (window.confirm('Esto borra todos tus cambios y el historial, y vuelve a la cartola original. ¿Continuar?')) {
-      resetAll();
-    }
-  };
 
   return (
     <div className="max-w-6xl mx-auto mt-8 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
@@ -141,8 +135,7 @@ const HistoryPanel = () => {
         <div className="px-5 pb-5 pt-1 border-t border-slate-100">
           {!persisted && (
             <p className="text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-md p-3 mb-4">
-              No se pudo escribir en el almacenamiento del navegador (modo incógnito o sin espacio). Los cambios
-              funcionan, pero <strong>no van a sobrevivir a un refresh</strong>.
+              No se pudo guardar en la base. Revisa tu conexión: los cambios podrían no haberse registrado.
             </p>
           )}
 
@@ -161,6 +154,9 @@ const HistoryPanel = () => {
                     </span>
                     <div className="min-w-0 flex-1 text-xs text-slate-500 leading-relaxed">
                       <EntryBody entry={entry} />
+                      {entry.actorName && (
+                        <span className="block text-[10px] text-slate-400 mt-0.5">por {entry.actorName}</span>
+                      )}
                     </div>
                     <div className="shrink-0 flex items-center gap-2">
                       {entry.viaUndo && (
@@ -184,17 +180,11 @@ const HistoryPanel = () => {
             </ul>
           )}
 
-          <div className="flex flex-wrap items-center justify-between gap-3 mt-4 pt-4 border-t border-slate-100">
+          <div className="mt-4 pt-4 border-t border-slate-100">
             <p className="text-xs text-slate-400">
-              Tus cambios se guardan en este navegador. Se conservan los últimos 500 registros.
+              Los cambios se guardan en la base compartida y los ven todos. Se muestran los últimos 500 registros;
+              para revertir algo, usa el ↺ de esa línea.
             </p>
-            <button
-              type="button"
-              onClick={handleReset}
-              className="text-xs text-red-600 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded transition-colors font-medium"
-            >
-              Volver a la cartola original
-            </button>
           </div>
         </div>
       )}

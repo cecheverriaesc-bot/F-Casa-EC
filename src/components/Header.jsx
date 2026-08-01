@@ -1,5 +1,6 @@
-import { Download, FileText, Landmark, Layers, Plus, Users, Wallet } from 'lucide-react';
+import { Download, FileText, Landmark, Layers, LogOut, Plus, Users, Wallet } from 'lucide-react';
 import { useTransactions } from '../context/TransactionContext';
+import { useAuth } from '../context/AuthContext';
 import { CARD_LABELS } from '../data/transactions';
 import { downloadCsv } from '../lib/csv';
 
@@ -12,6 +13,7 @@ const CARD_TABS = [
 
 const Header = ({ onOpenModal }) => {
   const { selectedCard, setSelectedCard, billedTransactions, unbilledTransactions, settings } = useTransactions();
+  const { user, signOut } = useAuth();
 
   const getSubTitle = () => {
     if (selectedCard === 'all') return 'Tarjetas + Gastos Fijos (Auditoría Julio)';
@@ -65,6 +67,14 @@ const Header = ({ onOpenModal }) => {
           className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white hover:bg-slate-50 text-slate-600 text-sm font-medium border border-slate-200 shadow-sm transition-colors"
         >
           <Download size={16} /> Exportar
+        </button>
+        <button
+          type="button"
+          onClick={signOut}
+          title={user?.email ? `Cerrar sesión de ${user.email}` : 'Cerrar sesión'}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-white text-sm font-medium transition-colors"
+        >
+          <LogOut size={16} />
         </button>
       </div>
     </div>
