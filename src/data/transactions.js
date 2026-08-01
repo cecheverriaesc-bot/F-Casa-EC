@@ -12,6 +12,10 @@ export const ALL_TRANSACTIONS = [
   { id: 'man-7', date: '05/07/2026', description: 'NICOLE (CUIDADO NIÑAS)', amount: -94500, category: 'Cuidado Infantil', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
   // Monto aproximado: confirmar contra la planilla de Previred del mes.
   { id: 'man-8', date: '10/07/2026', description: 'IMPOSICIONES (PREVIRED)', amount: -178632, category: 'Imposiciones', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
+  // Cuentas básicas pagadas con débito: salen de la cuenta al instante, no
+  // llegan en la cartola de la tarjeta. Fechas aproximadas.
+  { id: 'man-9', date: '25/07/2026', description: 'AGUAS CORDILLERA (CUENTA)', amount: -13260, category: 'Servicios Básicos', allocation: 'Casa', card: 'manual', paymentMethod: 'debito', isInstallment: false, isUnbilled: false },
+  { id: 'man-10', date: '25/07/2026', description: 'ENEL (LUZ)', amount: -170540, category: 'Servicios Básicos', allocation: 'Casa', card: 'manual', paymentMethod: 'debito', isInstallment: false, isUnbilled: false },
 
   // --- DEUDAS EN CUOTAS FUERA DE TARJETA ---
   // Deuda con la suegra por la estufa: $73.331 mensuales durante 6 meses.
@@ -92,17 +96,8 @@ export const ALL_TRANSACTIONS = [
   { id: '6259-PAY-1', date: '05/07/2026', description: 'MONTO CANCELADO', amount: 284912, category: 'Pago Tarjeta', type: 'payment', allocation: 'Casa', card: '6259', isInstallment: false, isUnbilled: false },
 ];
 
-/**
- * Gastos ya realizados que todavía no llegan en ninguna cartola: aparecerán en
- * la próxima facturación. No entran en el total de julio, sólo en la
- * proyección del mes siguiente.
- *
- * Las fechas son aproximadas: corregirlas contra la cartola cuando llegue.
- */
-export const INITIAL_UNBILLED = [
-  { id: 'unb-agua-1', date: '25/07/2026', description: 'CUENTA DE AGUA', amount: -13260, category: 'Servicios Básicos', allocation: 'Casa', card: '6259', isInstallment: false, isUnbilled: true },
-  { id: 'unb-luz-1', date: '25/07/2026', description: 'CUENTA DE LUZ', amount: -170540, category: 'Servicios Básicos', allocation: 'Casa', card: '6259', isInstallment: false, isUnbilled: true },
-];
+// Bandeja vacía para iniciar el próximo mes.
+export const INITIAL_UNBILLED = [];
 
 export const COLORS = {
   'Supermercado': '#10b981', 'Delivery': '#ef4444', 'Salud': '#ec4899', 'Transporte': '#f59e0b',
@@ -173,6 +168,16 @@ export const RECURRING_TEMPLATES = [
   {
     key: 'seguro-ninas', description: 'SEGURO COMPLEMENTARIO NIÑAS', amount: 70000, day: 5,
     category: 'Salud', allocation: 'Casa', paymentMethod: 'transferencia',
+  },
+  {
+    key: 'agua', description: 'AGUAS CORDILLERA (CUENTA)', amount: 13260, day: 25,
+    category: 'Servicios Básicos', allocation: 'Casa', paymentMethod: 'debito',
+    note: 'Varía cada mes: confirmar el monto real antes de cargar.',
+  },
+  {
+    key: 'luz', description: 'ENEL (LUZ)', amount: 170540, day: 25,
+    category: 'Servicios Básicos', allocation: 'Casa', paymentMethod: 'debito',
+    note: 'Varía cada mes y sube fuerte en invierno: confirmar antes de cargar.',
   },
   {
     key: 'nicole', description: 'NICOLE (CUIDADO NIÑAS)', amount: 94500, day: 5,
