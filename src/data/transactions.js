@@ -3,11 +3,12 @@
 // ==========================================
 export const ALL_TRANSACTIONS = [
   // --- GASTOS FIJOS / TRANSFERENCIAS (Actualizados a Julio) ---
-  { id: 'man-1', date: '01/07/2026', description: 'ARRIENDO', amount: -884000, category: 'Vivienda', allocation: 'Casa', card: 'manual', isInstallment: false, isUnbilled: false },
-  { id: 'man-2', date: '05/07/2026', description: 'GASTOS COMUNES', amount: -274393, category: 'Vivienda', allocation: 'Casa', card: 'manual', isInstallment: false, isUnbilled: false },
-  { id: 'man-3', date: '05/07/2026', description: 'SEGURO MUTUAL', amount: -70000, category: 'Salud', allocation: 'Casa', card: 'manual', isInstallment: false, isUnbilled: false },
-  { id: 'man-4', date: '05/07/2026', description: 'TIO TOTI', amount: -120000, category: 'Varios', allocation: 'Casa', card: 'manual', isInstallment: false, isUnbilled: false },
-  { id: 'man-5', date: '05/07/2026', description: 'STA MARIA', amount: -40000, category: 'Salud', allocation: 'Casa', card: 'manual', isInstallment: false, isUnbilled: false },
+  { id: 'man-1', date: '01/07/2026', description: 'ARRIENDO', amount: -884000, category: 'Vivienda', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
+  { id: 'man-2', date: '05/07/2026', description: 'GASTOS COMUNES', amount: -279277, category: 'Vivienda', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
+  { id: 'man-3', date: '05/07/2026', description: 'SEGURO COMPLEMENTARIO NIÑAS', amount: -70000, category: 'Salud', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
+  { id: 'man-4', date: '05/07/2026', description: 'TIO TOTI', amount: -120000, category: 'Varios', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
+  { id: 'man-5', date: '05/07/2026', description: 'STA MARIA', amount: -40000, category: 'Salud', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
+  { id: 'man-6', date: '05/07/2026', description: 'SRA MIRIAM (ASESORA DEL HOGAR)', amount: -640000, category: 'Servicio Doméstico', allocation: 'Casa', card: 'manual', paymentMethod: 'transferencia', isInstallment: false, isUnbilled: false },
 
   // --- TARJETA 9979 (WorldMember) - COMPRAS Y CARGOS JULIO 2026 ---
   { id: '9979-M-1', date: '23/06/2026', description: 'UNIMARC VITACURA', amount: -3290, category: 'Supermercado', allocation: 'Casa', card: '9979', isInstallment: false, isUnbilled: false },
@@ -144,10 +145,16 @@ export const RECURRING_TEMPLATES = [
   {
     key: 'arriendo', description: 'ARRIENDO', amount: 884000, day: 1,
     category: 'Vivienda', allocation: 'Casa', paymentMethod: 'transferencia',
+    note: 'Monto fijo hasta septiembre 2026; revisar al renovar.',
   },
   {
-    key: 'ggcc', description: 'GASTOS COMUNES', amount: 274393, day: 5,
+    key: 'ggcc', description: 'GASTOS COMUNES', amount: 279277, day: 5,
     category: 'Vivienda', allocation: 'Casa', paymentMethod: 'transferencia',
+    note: 'Varía cada mes: confirmar el monto real antes de cargar.',
+  },
+  {
+    key: 'seguro-ninas', description: 'SEGURO COMPLEMENTARIO NIÑAS', amount: 70000, day: 5,
+    category: 'Salud', allocation: 'Casa', paymentMethod: 'transferencia',
   },
   {
     key: 'nicole', description: 'NICOLE (CUIDADO NIÑAS)', amount: null, day: 5,
@@ -155,7 +162,7 @@ export const RECURRING_TEMPLATES = [
     note: 'Cuidado de las niñas en la mañana.',
   },
   {
-    key: 'miriam', description: 'SRA MIRIAM (ASESORA DEL HOGAR)', amount: null, day: 5,
+    key: 'miriam', description: 'SRA MIRIAM (ASESORA DEL HOGAR)', amount: 640000, day: 5,
     category: 'Servicio Doméstico', allocation: 'Casa', paymentMethod: 'transferencia',
     note: 'Sueldo líquido mensual.',
   },

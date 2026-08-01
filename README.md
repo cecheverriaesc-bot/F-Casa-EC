@@ -65,11 +65,15 @@ en rojo si no lo hacen.
 
 | Concepto | Monto |
 | --- | --- |
-| Compras del mes | $2.668.302 |
+| Compras del mes | $3.313.186 |
 | Cuotas arrastradas | $299.996 |
-| **Total facturado** | **$2.968.276** |
-| Aporte Carlos | $1.515.240 |
-| Aporte Rina | $1.453.036 |
+| **Total facturado** | **$3.613.160** |
+| Le corresponde a Carlos | $1.837.682 |
+| Le corresponde a Rina | $1.775.478 |
+| **Transferencia** | **Rina → Carlos $1.775.478** |
+
+> Cifras **parciales**: faltan por cargar la cuenta de Nicole y las imposiciones.
+> Como todo lo fijo es 50/50, cada $100.000 adicionales suben la transferencia $50.000.
 
 Los pagos de tarjeta (`MONTO CANCELADO`) quedan fuera del total facturado: son el
 pago del ciclo anterior, no gasto del mes.
@@ -81,16 +85,20 @@ es un checklist de lo recurrente (`RECURRING_TEMPLATES` en `src/data/transaction
 marca en verde lo ya cargado y en ámbar lo que falta, con el monto, el medio de pago y
 quién lo paga. Se abre solo cuando hay pendientes.
 
-| Gasto | Categoría | Monto |
-| --- | --- | --- |
-| Arriendo | Vivienda | $884.000 |
-| Gastos comunes | Vivienda | $274.393 |
-| Nicole (cuidado niñas) | Cuidado Infantil | *pendiente* |
-| Sra. Miriam (asesora del hogar) | Servicio Doméstico | *pendiente* |
-| Imposiciones (Previred) | Imposiciones | *pendiente* |
+| Gasto | Categoría | Monto | Nota |
+| --- | --- | --- | --- |
+| Arriendo | Vivienda | $884.000 | Fijo hasta septiembre 2026 |
+| Gastos comunes | Vivienda | $279.277 | Varía cada mes |
+| Seguro complementario niñas | Salud | $70.000 | |
+| Sra. Miriam (asesora del hogar) | Servicio Doméstico | $640.000 | Sueldo líquido |
+| Nicole (cuidado niñas) | Cuidado Infantil | *pendiente* | |
+| Imposiciones (Previred) | Imposiciones | *pendiente* | AFP, salud y cesantía de la asesora |
 
-Los tres pendientes no tienen monto en el código a propósito: se escriben en el panel,
+Los dos pendientes no tienen monto en el código a propósito: se escriben en el panel,
 o se dejan fijos en `RECURRING_TEMPLATES` si son iguales todos los meses.
+
+Todos los gastos fijos van 50/50 (`allocation: 'Casa'`). Lo personal es la excepción y
+casi siempre son compras en tarjeta — hoy sólo MACONLINE y PITS, ambos de Carlos.
 
 Cada movimiento distingue además **cómo** salió la plata: `efectivo`, `debito`,
 `transferencia` o `credito` (este último se deduce solo de la tarjeta). El medio se ve

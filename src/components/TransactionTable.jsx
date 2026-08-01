@@ -8,6 +8,10 @@ import UnbilledImporter from './UnbilledImporter';
 
 const NEXT_ALLOCATION = { Casa: 'Carlos', Carlos: 'Rina', Rina: 'Casa' };
 
+// Categorías reasignables a mano: 'Pago Tarjeta' y 'Adelantos' las fija el
+// sistema, así que no se ofrecen como opción.
+const CATEGORY_OPTIONS = Object.keys(COLORS).filter((c) => c !== 'Pago Tarjeta' && c !== 'Adelantos');
+
 const TransactionTable = () => {
   const { billedTransactions, unbilledTransactions, selectedCard, settings, updateTransaction, deleteTransaction } =
     useTransactions();
@@ -117,12 +121,30 @@ const TransactionTable = () => {
                   <td className="px-4 py-3 text-center text-xs font-medium text-slate-500 bg-slate-50">{t.installment}</td>
                 )}
                 <td className="px-4 py-3 text-center">
-                  <span
-                    className="px-2 py-1 rounded-full text-[10px] font-bold text-white whitespace-nowrap"
-                    style={{ backgroundColor: COLORS[t.category] || '#94a3b8' }}
-                  >
-                    {t.category}
-                  </span>
+                  {t.type === 'payment' ? (
+                    <span
+                      className="px-2 py-1 rounded-full text-[10px] font-bold text-white whitespace-nowrap"
+                      style={{ backgroundColor: COLORS[t.category] || '#94a3b8' }}
+                    >
+                      {t.category}
+                    </span>
+                  ) : (
+                    // Editable en línea: reclasificar es parte del cierre mensual.
+                    <select
+                      value={t.category}
+                      onChange={(e) => updateTransaction(t.id, { category: e.target.value })}
+                      aria-label={`Categoría de ${t.description}`}
+                      title="Cambiar categoría"
+                      className="appearance-none bg-none border-0 px-2 py-1 rounded-full text-[10px] font-bold text-white cursor-pointer max-w-[110px] truncate focus:ring-2 focus:ring-slate-400 focus:ring-offset-1"
+                      style={{ backgroundColor: COLORS[t.category] || '#94a3b8' }}
+                    >
+                      {CATEGORY_OPTIONS.map((c) => (
+                        <option key={c} value={c} className="bg-white text-slate-800 font-medium">
+                          {c}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                 </td>
                 <td className="px-4 py-3 text-center">
                   {t.type !== 'payment' ? (
